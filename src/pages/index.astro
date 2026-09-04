@@ -1,0 +1,434 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import { site, cta } from '../data/site';
+import { hangMucCha } from '../data/hang-muc';
+import { anh } from '../data/anh';
+import { faq, faqDaXacNhan } from '../data/faq';
+
+const title = 'Inox Hùng Oanh | Sản xuất và gia công inox tại Vĩnh Tường, Vĩnh Phúc';
+const description =
+  'Công ty TNHH Hùng Oanh Vĩnh Phúc, xưởng tại Khu 3, Thị trấn Tứ Trưng, Huyện Vĩnh Tường, Tỉnh Vĩnh Phúc. Nhận gia công cổng, cửa, cầu thang, lan can, bàn, kệ và sản phẩm inox theo yêu cầu. Liên hệ 0943 623 708 để nhận báo giá.';
+
+const faqSchema =
+  faqDaXacNhan.length > 0
+    ? [
+        {
+          '@type': 'FAQPage',
+          mainEntity: faqDaXacNhan.map((item) => ({
+            '@type': 'Question',
+            name: item.hoi,
+            acceptedAnswer: { '@type': 'Answer', text: item.traLoi },
+          })),
+        },
+      ]
+    : [];
+
+const camKet = [
+  {
+    icon: 'ph:certificate-fill',
+    tieuDe: 'Doanh nghiệp có pháp nhân',
+    noiDung: `${site.phapLy.tenCongTy}, mã số thuế ${site.phapLy.maSoThue}. Thông tin tra cứu công khai được.`,
+  },
+  {
+    icon: 'ph:ruler-fill',
+    tieuDe: 'Gia công theo số đo',
+    noiDung:
+      'Không bán theo cỡ tiêu chuẩn có sẵn. Mỗi đơn hàng được cắt theo kích thước thực tế của công trình.',
+  },
+  {
+    icon: 'ph:seal-check-fill',
+    tieuDe: 'Minh bạch vật liệu',
+    noiDung:
+      'Báo giá ghi rõ mác inox và độ dày, thuận tiện để quý khách đối chiếu giữa các đơn vị.',
+  },
+];
+
+const congDoan = [
+  { anh: anh.xuong.mayCat, ten: 'Cắt' },
+  { anh: anh.xuong.mayChan, ten: 'Chấn, uốn' },
+  { anh: anh.xuong.thoHan, ten: 'Hàn' },
+  { anh: anh.xuong.danhBong, ten: 'Đánh bóng' },
+];
+---
+
+<Base title={title} description={description} schema={faqSchema}>
+  {/* 1. Hero: chia lệch, ảnh lớn để trang có khối lượng thị giác. */}
+  <section class="relative overflow-hidden bg-[var(--color-surface-2)]">
+    <div class="wrap grid items-center gap-10 py-12 md:grid-cols-12 md:gap-14 md:py-20">
+      <div class="md:col-span-6">
+        <h1 class="text-[2.15rem] font-extrabold leading-[1.1] sm:text-5xl lg:text-[3.1rem]">
+          Sản xuất và gia công inox theo yêu cầu
+        </h1>
+        <p class="mt-6 max-w-[46ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+          Cổng, cửa, cầu thang, lan can, bàn và kệ inox, gia công theo bản vẽ
+          hoặc mẫu của quý khách.
+        </p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href={cta.call.href} class="btn btn-primary" data-cta="call-hero">
+            <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+            Gọi {site.phone.display}
+          </a>
+          <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-hero">
+            <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+            {cta.zalo.label}
+          </a>
+        </div>
+      </div>
+
+      <div class="md:col-span-6">
+        <div
+          class="overflow-hidden rounded-[var(--radius-card)]"
+          style="box-shadow: var(--shadow-lift)"
+        >
+          <PhotoSlot
+            anh={anh.hero}
+            label="Ảnh một sản phẩm hoàn thiện tiêu biểu"
+            ratio="4/3"
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 2. Cam kết: dữ kiện trên đường kẻ mảnh, không dùng thẻ nổi. */}
+  <section aria-label="Cam kết của xưởng" class="border-y border-[var(--color-line)]">
+    <div class="wrap grid divide-y divide-[var(--color-line)] md:grid-cols-3 md:divide-x md:divide-y-0">
+      {
+        camKet.map((item, i) => (
+          <div
+            class:list={[
+              'flex items-start gap-4 py-7',
+              i === 0 && 'md:pr-8',
+              i === 1 && 'md:px-8',
+              i === 2 && 'md:pl-8',
+            ]}
+          >
+            <span class="grid size-11 shrink-0 place-items-center rounded-[var(--radius-card)] bg-[var(--color-accent-soft)]">
+              <Icon name={item.icon} class="size-6 text-[var(--color-accent)]" aria-hidden="true" />
+            </span>
+            <div>
+              <p class="font-bold">{item.tieuDe}</p>
+              <p class="mt-1.5 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+                {item.noiDung}
+              </p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* 3. Danh mục sản phẩm: 6 mục, lưới 3 cột đều, không còn ô lệch. */}
+  <section class="wrap py-16 md:py-24">
+    <div class="max-w-[58ch]">
+      <p class="eyebrow">Sản phẩm</p>
+      <h2 class="mt-3 text-3xl font-extrabold md:text-4xl">
+        Sáu nhóm sản phẩm chính
+      </h2>
+      <p class="mt-4 text-lg leading-relaxed text-[var(--color-ink-muted)]">
+        Ngoài danh mục dưới đây, xưởng nhận gia công theo bản vẽ hoặc theo mẫu
+        do quý khách cung cấp.
+      </p>
+    </div>
+
+    <ul class="mt-11 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        hangMucCha.map((muc) => (
+          <li>
+            <a href={muc.href} class="card-link block h-full no-underline">
+              <article class="card flex h-full flex-col overflow-hidden">
+                <PhotoSlot
+                  anh={anh.hangMuc[muc.slug as keyof typeof anh.hangMuc]}
+                  label={`Ảnh ${muc.ten.toLowerCase()}`}
+                  ratio="4/3"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                />
+                <div class="flex flex-1 flex-col p-6">
+                  <h3 class="text-lg font-bold">{muc.ten}</h3>
+                  <p class="mt-2.5 flex-1 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+                    {muc.moTa}
+                  </p>
+                  <p class="mt-5 flex items-center gap-1.5 text-[15px] font-semibold text-[var(--color-accent)]">
+                    Xem chi tiết
+                    <Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+                  </p>
+                </div>
+              </article>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/*
+    4. Giới thiệu công ty.
+
+    Đặt ngay sau danh mục sản phẩm, trước phần năng lực: khách vừa thấy xưởng
+    làm được gì thì câu hỏi tiếp theo là "đây là ai". Mọi số liệu ở đây đều lấy
+    từ đăng ký doanh nghiệp và tra cứu độc lập được, nên phần này không cần
+    tính từ quảng cáo, chỉ cần dữ kiện.
+  */}
+  <section class="wrap py-16 md:py-24">
+    <div class="mx-auto max-w-[68ch] text-center">
+      <p class="eyebrow">Giới thiệu</p>
+      <h2 class="mt-3 text-3xl font-extrabold md:text-4xl">
+        {site.phapLy.tenCongTy}
+      </h2>
+    </div>
+
+    <div
+      class="mx-auto mt-9 grid max-w-[68ch] gap-5 text-lg leading-[1.75] text-[var(--color-ink-muted)]"
+    >
+      <p>
+        Công ty TNHH Hùng Oanh Vĩnh Phúc hoạt động từ tháng 11 năm {
+          site.phapLy.namThanhLap
+        }, chuyên sản xuất và gia công các sản phẩm inox phục vụ công trình dân
+        dụng và hộ gia đình. Xưởng đặt tại {site.address.full}.
+      </p>
+      <p>
+        Phạm vi nhận việc trải từ các hạng mục hoàn thiện công trình như cổng,
+        cửa, cầu thang, lan can, mái che, cho tới đồ dùng theo yêu cầu như bàn
+        bếp, kệ, tủ và chậu rửa. Sản phẩm được gia công theo kích thước thực tế
+        của từng công trình, không sản xuất sẵn theo cỡ tiêu chuẩn, nên lắp vừa
+        ngay và hạn chế phải chỉnh sửa tại chỗ.
+      </p>
+      <p>
+        Các công đoạn cắt, chấn, hàn và đánh bóng đều được thực hiện tại xưởng.
+        Nhờ chủ động toàn bộ dây chuyền, công ty kiểm soát được nguồn vật tư,
+        chất lượng mối hàn và tiến độ đã hẹn với khách, thay vì phụ thuộc vào
+        đơn vị gia công bên ngoài.
+      </p>
+      <p>
+        Trong mọi báo giá, công ty ghi rõ mác inox và độ dày của từng hạng mục.
+        Đây là cơ sở để quý khách đối chiếu giữa các đơn vị trên cùng một mặt
+        bằng, đồng thời là cam kết về đúng vật liệu đã thỏa thuận khi bàn giao.
+      </p>
+      <p>
+        Thông tin đăng ký doanh nghiệp được công bố đầy đủ ở cuối trang. Quý
+        khách có thể tra cứu độc lập qua mã số thuế {site.phapLy.maSoThue} trước
+        khi làm việc.
+      </p>
+    </div>
+
+    <div class="mt-9 text-center">
+      <a
+        href="/ve-chung-toi/"
+        class="inline-flex items-center gap-1.5 font-semibold text-[var(--color-accent)] no-underline hover:underline"
+      >
+        Tìm hiểu thêm về công ty
+        <Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+  </section>
+
+  {/* 5. Năng lực sản xuất: ảnh lớn bên trái, bốn công đoạn bên phải. */}
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface-2)] py-16 md:py-24">
+    <div class="wrap grid gap-10 lg:grid-cols-12 lg:gap-14">
+      <div class="lg:col-span-5">
+        <p class="eyebrow">Năng lực</p>
+        <h2 class="mt-3 text-3xl font-extrabold md:text-4xl">
+          Sản xuất trực tiếp tại xưởng
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-[var(--color-ink-muted)]">
+          Toàn bộ công đoạn cắt, chấn, hàn và đánh bóng được thực hiện tại xưởng,
+          không chuyển cho đơn vị bên ngoài. Nhờ vậy xưởng kiểm soát được vật
+          liệu, chất lượng mối hàn và tiến độ bàn giao.
+        </p>
+
+        <div class="mt-9 overflow-hidden rounded-[var(--radius-card)]" style="box-shadow: var(--shadow-card)">
+          <PhotoSlot
+            anh={anh.xuongHan}
+            label="Thợ của xưởng đang làm việc"
+            ratio="16/9"
+            sizes="(max-width: 1024px) 100vw, 40vw"
+          />
+        </div>
+      </div>
+
+      <div class="lg:col-span-7">
+        <ul class="grid gap-5 sm:grid-cols-2">
+          {
+            congDoan.map((cd) => (
+              <li class="card overflow-hidden">
+                <PhotoSlot
+                  anh={cd.anh}
+                  label={cd.ten}
+                  ratio="4/3"
+                  sizes="(max-width: 640px) 100vw, 30vw"
+                />
+                <p class="px-5 py-4 font-bold">{cd.ten}</p>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="card mt-5 flex flex-col gap-5 overflow-hidden sm:flex-row sm:items-center">
+          <div class="sm:w-2/5">
+            <PhotoSlot
+              anh={anh.xuong.vatTu}
+              label="Vật tư inox tại xưởng"
+              ratio="4/3"
+              sizes="(max-width: 640px) 100vw, 25vw"
+            />
+          </div>
+          <div class="px-5 pb-5 sm:py-5 sm:pl-0 sm:pr-6">
+            <p class="font-bold">Vật tư sẵn tại xưởng</p>
+            <p class="mt-2 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+              Ống và tấm inox các cỡ được dự trữ sẵn, rút ngắn thời gian chờ vật
+              tư cho những đơn hàng gấp.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* 5. Công trình: cuộn ngang, để bề rộng không tốn chiều cao trang. */}
+  <section class="py-16 md:py-24">
+    <div class="wrap flex flex-wrap items-end justify-between gap-6">
+      <div class="max-w-[52ch]">
+        <h2 class="text-3xl font-extrabold md:text-4xl">Công trình tiêu biểu</h2>
+        <p class="mt-4 text-lg leading-relaxed text-[var(--color-ink-muted)]">
+          Hình ảnh thực tế các công trình đã bàn giao, kèm địa điểm và thời gian
+          thực hiện.
+        </p>
+      </div>
+      <a
+        href="/cong-trinh/"
+        class="inline-flex items-center gap-1.5 font-semibold text-[var(--color-accent)] no-underline hover:underline"
+      >
+        Xem tất cả công trình
+        <Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+      </a>
+    </div>
+
+    <ul class="wrap mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-5">
+      {
+        [1, 2, 3, 4].map((n) => (
+          <li class="w-[80vw] shrink-0 snap-start sm:w-[46vw] lg:w-[31%]">
+            <div class="card overflow-hidden">
+              <PhotoSlot label={`Ảnh công trình ${n}`} ratio="3/2" />
+              <p class="px-5 py-4 text-[15px] text-[var(--color-ink-muted)]">
+                Chờ ảnh thật kèm địa điểm và năm
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  {/* 6. Vật liệu: câu hỏi quyết định giá của mọi đơn hàng. */}
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface-2)] py-16 md:py-24">
+    <div class="wrap grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <div>
+        <p class="eyebrow">Vật liệu</p>
+        <h2 class="mt-3 text-3xl font-extrabold md:text-4xl">
+          Lựa chọn mác inox phù hợp
+        </h2>
+        <p class="mt-4 text-lg leading-relaxed text-[var(--color-ink-muted)]">
+          Mác inox quyết định phần lớn giá thành, và cũng là điểm dễ gây hiểu
+          nhầm nhất khi so sánh báo giá. Xưởng ghi rõ mác và độ dày trên mọi báo
+          giá để quý khách đối chiếu trên cùng một mặt bằng.
+        </p>
+        <a
+          href="/kien-thuc/inox-304-201-316/"
+          class="mt-7 inline-flex items-center gap-1.5 font-semibold text-[var(--color-accent)] no-underline hover:underline"
+        >
+          Tìm hiểu chi tiết về inox 304, 201 và 316
+          <Icon name="ph:arrow-right-bold" class="size-4" aria-hidden="true" />
+        </a>
+      </div>
+
+      <dl class="grid gap-5 sm:grid-cols-2">
+        <div class="card p-6">
+          <dt class="text-xl font-extrabold">Inox 304</dt>
+          <dd class="mt-4 grid gap-3 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+            <p>Khả năng chống gỉ tốt, sử dụng được ngoài trời và nơi ẩm.</p>
+            <p>Phù hợp với cổng, lan can, bàn bếp, chậu rửa.</p>
+            <p>Giá thành cao hơn inox 201.</p>
+          </dd>
+        </div>
+        <div class="card p-6">
+          <dt class="text-xl font-extrabold">Inox 201</dt>
+          <dd class="mt-4 grid gap-3 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+            <p>Chi phí thấp hơn, phù hợp với vị trí trong nhà, khô ráo.</p>
+            <p>Thường dùng cho kệ trong nhà, khung ít tiếp xúc nước.</p>
+            <p>Tiếp xúc ẩm kéo dài dễ xuất hiện vết hoen.</p>
+          </dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  {/* 7. FAQ: dùng thẻ details của trình duyệt, không cần JavaScript. */}
+  <section class="wrap py-16 md:py-24">
+    <h2 class="text-3xl font-extrabold md:text-4xl">Câu hỏi thường gặp</h2>
+
+    <div class="mt-9 max-w-[72ch]">
+      {
+        faq.map((item) => (
+          <details class="group border-b border-[var(--color-line)]">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-left text-lg font-semibold">
+              {item.hoi}
+              <Icon
+                name="ph:plus-bold"
+                class="size-5 shrink-0 text-[var(--color-ink-muted)] transition-transform group-open:rotate-45"
+                aria-hidden="true"
+              />
+            </summary>
+            {item.traLoi ? (
+              <p class="pb-6 leading-relaxed text-[var(--color-ink-muted)]">{item.traLoi}</p>
+            ) : (
+              <p
+                class="mb-6 rounded-[var(--radius-card)] border border-dashed border-[var(--color-line)] bg-[var(--color-surface-2)] px-4 py-3 text-[15px] text-[var(--color-ink-muted)]"
+                data-cho-noi-dung="faq"
+              >
+                Nội dung đang chờ xưởng xác nhận.
+              </p>
+            )}
+          </details>
+        ))
+      }
+    </div>
+  </section>
+
+  {/* 8. CTA cuối: vẫn đúng hai kênh liên hệ như mọi nơi khác. */}
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-0">
+      <PhotoSlot
+        anh={anh.minhHoa.khoVatTu}
+        label="Ảnh nền kho vật tư"
+        ratio="21/9"
+        sizes="100vw"
+        class="h-full"
+      />
+      <div class="scrim absolute inset-0"></div>
+    </div>
+
+    <div class="wrap relative py-20 text-center md:py-28">
+      <h2 class="text-3xl font-extrabold text-white md:text-4xl">
+        Liên hệ nhận báo giá
+      </h2>
+      <p class="mx-auto mt-4 max-w-[52ch] text-lg leading-relaxed text-white/90">
+        Quý khách cung cấp kích thước và vị trí lắp đặt, xưởng báo giá chi tiết
+        theo mác inox và độ dày cụ thể.
+      </p>
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-footer">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-footer">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

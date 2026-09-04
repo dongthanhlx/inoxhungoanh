@@ -1,0 +1,27 @@
+---
+/**
+ * The whole site converts here. Two channels, always reachable on a phone,
+ * because that is how these customers actually get in touch (ADR-002).
+ * Desktop keeps the call button in the header instead, so this stays mobile-only.
+ */
+import { Icon } from 'astro-icon/components';
+import { cta } from '../data/site';
+---
+
+<!-- Reserves the space the fixed bar occupies, so it never covers the last section. -->
+<div class="h-[calc(72px+env(safe-area-inset-bottom))] md:hidden" aria-hidden="true"></div>
+
+<div
+  class="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--color-line)] bg-[var(--color-surface)]/97 pb-[env(safe-area-inset-bottom)] backdrop-blur md:hidden"
+>
+  <div class="grid grid-cols-2 gap-3 px-4 py-3">
+    <a href={cta.call.href} class="btn btn-primary" data-cta="call-sticky">
+      <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+      {cta.call.label}
+    </a>
+    <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-sticky">
+      <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+      {cta.zalo.label}
+    </a>
+  </div>
+</div>

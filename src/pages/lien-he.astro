@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import { site, cta } from '../data/site';
+
+const title = `Liên hệ Inox Hùng Oanh | ${site.address.full}`;
+const description = `Xưởng inox Hùng Oanh tại ${site.address.full}. Gọi ${site.phone.display} hoặc nhắn Zalo để được báo giá.`;
+
+const crumbs = [{ name: 'Liên hệ', href: '/lien-he/' }];
+---
+
+<Base title={title} description={description} crumbs={crumbs}>
+  <section class="wrap py-12 md:py-16">
+    <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+      Liên hệ xưởng
+    </h1>
+    <p class="mt-5 max-w-[52ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+      Gọi hoặc nhắn Zalo là nhanh nhất. Nói kích thước và chỗ định lắp, xưởng
+      báo giá theo mác inox và độ dày cụ thể.
+    </p>
+  </section>
+
+  <section class="wrap grid gap-10 pb-16 lg:grid-cols-2 lg:gap-14 md:pb-24">
+    <div>
+      <div class="grid gap-3 sm:grid-cols-2">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-lienhe">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-lienhe">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+
+      <dl class="mt-10 grid gap-7">
+        <div class="flex items-start gap-4">
+          <Icon
+            name="ph:map-pin-fill"
+            class="mt-0.5 size-6 shrink-0 text-[var(--color-accent)]"
+            aria-hidden="true"
+          />
+          <div>
+            <dt class="font-bold">Địa chỉ xưởng</dt>
+            <dd class="mt-1 text-[var(--color-ink-muted)]">{site.address.full}</dd>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <Icon
+            name="ph:phone-fill"
+            class="mt-0.5 size-6 shrink-0 text-[var(--color-accent)]"
+            aria-hidden="true"
+          />
+          <div>
+            <dt class="font-bold">Điện thoại và Zalo</dt>
+            <dd class="mt-1">
+              <a href={cta.call.href} class="font-semibold no-underline hover:underline">
+                {site.phone.display}
+              </a>
+            </dd>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4">
+          <Icon
+            name="ph:clock-fill"
+            class="mt-0.5 size-6 shrink-0 text-[var(--color-accent)]"
+            aria-hidden="true"
+          />
+          <div>
+            <dt class="font-bold">Giờ mở cửa</dt>
+            <dd
+              class="mt-1 text-[var(--color-ink-muted)]"
+              data-cho-noi-dung="gio-mo-cua"
+            >
+              {
+                site.openingHours ??
+                  'Chưa công bố. Cần chủ xưởng xác nhận trước khi đăng.'
+              }
+            </dd>
+          </div>
+        </div>
+      </dl>
+    </div>
+
+    <div>
+      {/*
+        Map goes in once Google Business Profile exists: the embed URL comes from
+        the listing, which also fixes the pin. Adding a hand-placed pin before
+        that risks two different locations for the same xưởng.
+      */}
+      <PhotoSlot
+        label="Bản đồ Google, nhúng sau khi lập Google Business Profile"
+        ratio="4/3"
+      />
+      <p class="mt-4 text-[15px] text-[var(--color-ink-muted)]">
+        Xưởng nằm tại {site.address.full}. Tới xem trực tiếp được, gọi trước để
+        có người tiếp.
+      </p>
+    </div>
+  </section>
+</Base>

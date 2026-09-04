@@ -1,0 +1,81 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import PhotoSlot from '../../components/PhotoSlot.astro';
+import { site, cta } from '../../data/site';
+import { hangMucCha } from '../../data/hang-muc';
+
+const title = 'Sản phẩm inox | Inox Hùng Oanh, Vĩnh Tường, Vĩnh Phúc';
+const description =
+  'Các nhóm việc xưởng Inox Hùng Oanh nhận làm: cửa cổng, cầu thang lan can, bàn và thiết bị bếp, kệ tủ, mái che, gia công theo yêu cầu.';
+
+const crumbs = [{ name: 'Sản phẩm', href: '/san-pham/' }];
+---
+
+<Base title={title} description={description} crumbs={crumbs}>
+  <section class="wrap py-12 md:py-16">
+    <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+      Xưởng nhận làm những gì
+    </h1>
+    <p class="mt-5 max-w-[54ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+      Sáu nhóm việc chính, tất cả đều làm theo số đo và yêu cầu cụ thể. Ngoài
+      danh sách này, cứ gọi hỏi.
+    </p>
+  </section>
+
+  <section class="wrap pb-16 md:pb-24">
+    <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        hangMucCha.map((muc) => (
+          <li>
+            <a
+              href={muc.href}
+              class="group flex h-full flex-col overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-line)] bg-[var(--color-surface)] no-underline transition-colors hover:border-[var(--color-ink-muted)]"
+            >
+              <PhotoSlot
+                label={`Ảnh ${muc.ten.toLowerCase()}`}
+                ratio="4/3"
+                class="rounded-none border-x-0 border-t-0"
+              />
+              <div class="flex flex-1 flex-col p-5">
+                <h2 class="text-lg font-bold">{muc.ten}</h2>
+                <p class="mt-2 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+                  {muc.moTa}
+                </p>
+                <p class="mt-3 text-sm text-[var(--color-ink-muted)]">
+                  {muc.con.map((c) => c.ten).join(', ')}
+                </p>
+                <p class="mt-4 flex items-center gap-1.5 text-[15px] font-semibold text-[var(--color-accent)]">
+                  Xem chi tiết
+                  <Icon
+                    name="ph:arrow-right-bold"
+                    class="size-4 transition-transform group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </p>
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-surface-2)]">
+    <div class="wrap py-14 text-center md:py-20">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Cần báo giá? Gọi là được
+      </h2>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-footer">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-footer">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

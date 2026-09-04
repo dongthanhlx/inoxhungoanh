@@ -1,0 +1,76 @@
+---
+/**
+ * Một ô ảnh: hoặc là ảnh thật, hoặc là ảnh minh hoạ (stock), hoặc là chỗ trống
+ * có ghi rõ cần ảnh gì.
+ *
+ * Ảnh stock được đánh dấu `data-anh-stock` trong HTML để `npm run kiem-tra`
+ * đếm được và nhắc thay. Chỗ trống đánh dấu `data-photo-slot`.
+ */
+import { Picture } from 'astro:assets';
+import type { Anh } from '../data/anh';
+
+interface Props {
+  /** Ảnh đã có. Bỏ trống thì render ô chờ. */
+  anh?: Anh;
+  /** Mô tả ảnh cần có, hiện trên ô chờ và trong báo cáo kiểm tra. */
+  label: string;
+  ratio?: '21/9' | '16/9' | '3/2' | '4/3' | '1/1';
+  /** Ảnh trên màn hình đầu tiên: tải ngay để không trễ LCP. */
+  priority?: boolean;
+  /** Bề rộng hiển thị thực tế, để build ra đúng cỡ ảnh. */
+  sizes?: string;
+  class?: string;
+}
+
+const {
+  anh,
+  label,
+  ratio = '4/3',
+  priority = false,
+  sizes = '(max-width: 768px) 100vw, 50vw',
+  class: className = '',
+} = Astro.props;
+---
+
+{
+  anh ? (
+    <Picture
+      src={anh.src}
+      alt={anh.alt}
+      widths={[420, 720, 1100, 1600]}
+      sizes={sizes}
+      formats={['avif', 'webp']}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      class={`h-full w-full object-cover ${className}`}
+      style={`aspect-ratio:${ratio}`}
+      data-anh-stock={anh.stock ? (anh.canThay ?? label) : undefined}
+    />
+  ) : (
+    <div
+      class={`photo-slot relative grid place-items-center overflow-hidden ${className}`}
+      style={`aspect-ratio:${ratio}`}
+      role="img"
+      aria-label={`Chỗ dành cho ảnh: ${label}`}
+      data-photo-slot={label}
+    >
+      <span class="px-4 text-center text-[13px] font-semibold leading-snug text-[var(--color-ink-muted)]">
+        {label}
+      </span>
+    </div>
+  )
+}
+
+<style>
+  .photo-slot {
+    border-radius: var(--radius-card);
+    background-color: var(--color-surface-2);
+    background-image: repeating-linear-gradient(
+      112deg,
+      transparent 0 3px,
+      color-mix(in srgb, var(--color-line) 60%, transparent) 3px 4px
+    );
+    border: 1px dashed var(--color-line);
+  }
+</style>

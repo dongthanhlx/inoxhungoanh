@@ -1,0 +1,95 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site, cta } from '../data/site';
+
+const nav = [
+  { label: 'Sản phẩm', href: '/san-pham/' },
+  { label: 'Công trình', href: '/cong-trinh/' },
+  { label: 'Về chúng tôi', href: '/ve-chung-toi/' },
+  { label: 'Liên hệ', href: '/lien-he/' },
+];
+
+const path = Astro.url.pathname;
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-surface)]/95 backdrop-blur"
+>
+  <div class="wrap flex h-16 items-center justify-between gap-4 md:h-[72px]">
+    <a
+      href="/"
+      class="flex shrink-0 items-baseline gap-2 no-underline"
+      aria-label={`${site.name} - trang chủ`}
+    >
+      <span class="text-lg font-extrabold tracking-tight text-[var(--color-ink)]"
+        >INOX HÙNG OANH</span
+      >
+    </a>
+
+    <nav aria-label="Điều hướng chính" class="hidden md:block">
+      <ul class="flex items-center gap-7">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={path.startsWith(item.href) ? 'page' : undefined}
+                class="text-[15px] font-medium text-[var(--color-ink-muted)] no-underline transition-colors hover:text-[var(--color-ink)] aria-[current=page]:text-[var(--color-ink)]"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a
+      href={cta.call.href}
+      class="btn btn-primary hidden shrink-0 md:inline-flex"
+      data-cta="call-header"
+    >
+      <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+      {site.phone.display}
+    </a>
+
+    <!-- Mobile menu: native disclosure, no JavaScript. -->
+    <details class="group md:hidden">
+      <summary
+        class="grid size-11 cursor-pointer list-none place-items-center rounded-[var(--radius-card)] border border-[var(--color-line)]"
+        aria-label="Mở menu"
+      >
+        <Icon
+          name="ph:list-bold"
+          class="size-6 group-open:hidden"
+          aria-hidden="true"
+        />
+        <Icon
+          name="ph:x-bold"
+          class="hidden size-6 group-open:block"
+          aria-hidden="true"
+        />
+      </summary>
+      <nav
+        aria-label="Điều hướng chính"
+        class="absolute left-0 right-0 top-16 border-b border-[var(--color-line)] bg-[var(--color-surface)] shadow-lg"
+      >
+        <ul class="wrap flex flex-col py-2">
+          {
+            nav.map((item) => (
+              <li class="border-b border-[var(--color-line)] last:border-0">
+                <a
+                  href={item.href}
+                  aria-current={path.startsWith(item.href) ? 'page' : undefined}
+                  class="flex min-h-[52px] items-center text-base font-medium text-[var(--color-ink)] no-underline"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>

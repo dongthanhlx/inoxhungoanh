@@ -1,0 +1,156 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import PhotoSlot from '../../components/PhotoSlot.astro';
+import { site, cta } from '../../data/site';
+import { hangMucCha } from '../../data/hang-muc';
+import { anh } from '../../data/anh';
+
+export const getStaticPaths = (() =>
+  hangMucCha.map((muc) => ({
+    params: { slug: muc.slug },
+    props: { muc },
+  }))) satisfies GetStaticPaths;
+
+const { muc } = Astro.props;
+
+const title = `${muc.ten} tại Vĩnh Tường, Vĩnh Phúc | Inox Hùng Oanh`;
+const description = `${muc.moTa} Xưởng tại ${site.address.full}. Gọi ${site.phone.display} để báo giá.`;
+
+/*
+  Product with a quote-on-request offer. No price is declared because no price is
+  fixed: every job is quoted from real measurements (ADR-002).
+*/
+const schema = [
+  {
+    '@type': 'Product',
+    name: muc.ten,
+    description: muc.moTa,
+    brand: { '@type': 'Brand', name: site.name },
+    offers: {
+      '@type': 'Offer',
+      availability: 'https://schema.org/InStock',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        priceCurrency: 'VND',
+        valueAddedTaxIncluded: true,
+      },
+      seller: { '@id': `${site.domain}/#business` },
+    },
+  },
+];
+
+const crumbs = [
+  { name: 'Sản phẩm', href: '/san-pham/' },
+  { name: muc.ten, href: muc.href },
+];
+---
+
+<Base title={title} description={description} crumbs={crumbs} schema={schema}>
+  <nav aria-label="Đường dẫn" class="wrap pt-6">
+    <ol class="flex flex-wrap items-center gap-2 text-sm text-[var(--color-ink-muted)]">
+      <li><a href="/" class="no-underline hover:underline">Trang chủ</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/san-pham/" class="no-underline hover:underline">Sản phẩm</a></li>
+      <li aria-hidden="true">/</li>
+      <li class="font-medium text-[var(--color-ink)]">{muc.ten}</li>
+    </ol>
+  </nav>
+
+  <section class="wrap grid items-center gap-10 py-10 md:grid-cols-12 md:py-14">
+    <div class="md:col-span-7">
+      <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+        {muc.ten}
+      </h1>
+      <p class="mt-5 max-w-[48ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+        {muc.moTa}
+      </p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-hero">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-hero">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+    <div class="md:col-span-5">
+      <div
+        class="overflow-hidden rounded-[var(--radius-card)]"
+        style="box-shadow: var(--shadow-lift)"
+      >
+        <PhotoSlot
+          anh={anh.hangMuc[muc.slug as keyof typeof anh.hangMuc]}
+          label={`Ảnh ${muc.ten.toLowerCase()}`}
+          ratio="4/3"
+          priority
+          sizes="(max-width: 768px) 100vw, 42vw"
+        />
+      </div>
+    </div>
+  </section>
+
+  {/*
+    Hạng mục con render as a list, not as links, until they pass the substance
+    gate in CLAUDE.md. A child gets its own route only when it has real photos,
+    its own copy and its own FAQ. Listing them here keeps the keyword coverage
+    without shipping near-empty pages.
+  */}
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface-2)] py-14 md:py-20">
+    <div class="wrap">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Nhóm này gồm những gì
+      </h2>
+      <ul class="mt-7 flex flex-wrap gap-3">
+        {
+          muc.con.map((con) => (
+            <li class="rounded-[var(--radius-card)] border border-[var(--color-line)] bg-[var(--color-surface)] px-4 py-2.5 text-[15px] font-medium">
+              {con.ten}
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mt-6 max-w-[56ch] text-[15px] text-[var(--color-ink-muted)]">
+        Nếu hạng mục quý khách cần không có trong danh sách trên, vui lòng liên
+        hệ để được tư vấn. Phần lớn sản phẩm inox đều có thể gia công theo mẫu
+        hoặc theo bản vẽ.
+      </p>
+    </div>
+  </section>
+
+  <section class="wrap py-14 md:py-20">
+    <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+      Ảnh việc đã làm
+    </h2>
+    <div class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <PhotoSlot label={`Ảnh ${muc.ten.toLowerCase()} 1`} ratio="4/3" />
+      <PhotoSlot label={`Ảnh ${muc.ten.toLowerCase()} 2`} ratio="4/3" />
+      <PhotoSlot label={`Ảnh ${muc.ten.toLowerCase()} 3`} ratio="4/3" />
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-surface-2)]">
+    <div class="wrap py-14 text-center md:py-20">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Báo giá {muc.ten.toLowerCase()}
+      </h2>
+      <p class="mx-auto mt-4 max-w-[46ch] text-[var(--color-ink-muted)]">
+        Quý khách cung cấp kích thước và vị trí lắp đặt, xưởng báo giá chi tiết
+        theo mác inox và độ dày.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-footer">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-footer">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

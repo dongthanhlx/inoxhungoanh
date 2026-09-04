@@ -1,0 +1,103 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import { site, cta } from '../data/site';
+
+const title = 'Công trình đã làm | Inox Hùng Oanh';
+const description =
+  'Ảnh thật các công trình inox Hùng Oanh đã bàn giao, kèm địa điểm và năm thực hiện.';
+
+const crumbs = [{ name: 'Công trình', href: '/cong-trinh/' }];
+
+/*
+  Empty until real jobs are entered. CLAUDE.md: every Công trình maps to a real
+  job with real photos, or it does not ship. Nothing here is invented, so the
+  page renders its empty state honestly rather than filling itself with samples.
+
+  Real entries carry: tên việc, hạng mục, địa điểm, năm, ảnh. Địa điểm thật is
+  also a strong local-SEO signal, so it is not optional.
+*/
+const congTrinh: Array<{
+  ten: string;
+  diaDiem: string;
+  nam: number;
+}> = [];
+
+const soChoTrong = 6;
+---
+
+<Base title={title} description={description} crumbs={crumbs}>
+  <section class="wrap py-12 md:py-16">
+    <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+      Công trình đã làm
+    </h1>
+    <p class="mt-5 max-w-[54ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+      Ảnh thật của việc đã bàn giao, kèm địa điểm và năm. Không dùng ảnh sưu tầm.
+    </p>
+  </section>
+
+  <section class="wrap pb-16 md:pb-24">
+    {
+      congTrinh.length > 0 ? (
+        <ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {congTrinh.map((ct) => (
+            <li class="overflow-hidden rounded-[var(--radius-card)] border border-[var(--color-line)]">
+              <PhotoSlot label={ct.ten} ratio="4/3" class="rounded-none border-0" />
+              <div class="p-5">
+                <h2 class="font-bold">{ct.ten}</h2>
+                <p class="mt-1 text-[15px] text-[var(--color-ink-muted)]">
+                  {ct.diaDiem}, {ct.nam}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div>
+          <div
+            class="rounded-[var(--radius-card)] border border-dashed border-[var(--color-line)] bg-[var(--color-surface-2)] p-6 md:p-8"
+            data-cho-noi-dung="cong-trinh"
+          >
+            <h2 class="text-lg font-bold">Chưa có công trình nào được nhập</h2>
+            <p class="mt-2 max-w-[62ch] leading-relaxed text-[var(--color-ink-muted)]">
+              Trang này cố tình để trống thay vì lấp bằng ảnh sưu tầm. Mỗi mục
+              cần ảnh thật của việc Hùng Oanh đã làm, kèm địa điểm và năm. Địa
+              điểm thật cũng chính là tín hiệu tìm kiếm địa phương mạnh nhất mà
+              trang này tạo ra.
+            </p>
+          </div>
+
+          <ul class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-hidden="true">
+            {Array.from({ length: soChoTrong }).map((_, i) => (
+              <li>
+                <PhotoSlot label={`Chỗ cho công trình ${i + 1}`} ratio="4/3" />
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-surface-2)]">
+    <div class="wrap py-14 text-center md:py-20">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Muốn làm việc tương tự
+      </h2>
+      <p class="mx-auto mt-4 max-w-[46ch] text-[var(--color-ink-muted)]">
+        Gửi ảnh mẫu qua Zalo hoặc gọi mô tả, xưởng báo giá theo kích thước thật.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-footer">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-footer">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

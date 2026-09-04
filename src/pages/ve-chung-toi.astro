@@ -1,0 +1,150 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import PhotoSlot from '../components/PhotoSlot.astro';
+import { site, cta } from '../data/site';
+import { anh } from '../data/anh';
+
+const title = `Về chúng tôi | ${site.phapLy.tenCongTy}`;
+const description = `${site.phapLy.tenCongTy}, mã số thuế ${site.phapLy.maSoThue}, hoạt động từ ${site.phapLy.ngayHoatDong}. Sản xuất và gia công inox, xưởng tại ${site.address.full}.`;
+
+const crumbs = [{ name: 'Về chúng tôi', href: '/ve-chung-toi/' }];
+
+/*
+  Deliberately thin on claims. Years in business, headcount, machine list and
+  certifications are all facts only the owner can confirm, and CLAUDE.md forbids
+  inventing them. They land here from assets-goc/THONG-TIN.md section 4.
+*/
+const congDoan = [
+  { icon: 'ph:scissors-fill', ten: 'Cắt', mo: 'Cắt tấm và ống theo số đo của từng việc.' },
+  { icon: 'ph:arrow-bend-down-right-bold', ten: 'Chấn, uốn', mo: 'Tạo hình khung, gờ, chi tiết cong.' },
+  { icon: 'ph:fire-fill', ten: 'Hàn', mo: 'Ghép khung và chi tiết thành sản phẩm hoàn chỉnh.' },
+  { icon: 'ph:sparkle-fill', ten: 'Đánh bóng', mo: 'Xử lý mối hàn và bề mặt trước khi bàn giao.' },
+];
+---
+
+<Base title={title} description={description} crumbs={crumbs}>
+  <section class="wrap grid items-center gap-10 py-12 md:grid-cols-12 md:py-16">
+    <div class="md:col-span-7">
+      <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+        {site.phapLy.tenCongTy}
+      </h1>
+      <p class="mt-5 max-w-[52ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+        Hoạt động từ tháng 11 năm {site.phapLy.namThanhLap}, chuyên sản xuất và
+        gia công sản phẩm inox cho công trình dân dụng và hộ gia đình. Việc nhận
+        về được làm tại xưởng, từ khâu cắt tới khâu đánh bóng cuối cùng.
+      </p>
+    </div>
+    <div class="md:col-span-5">
+      <PhotoSlot label="Ảnh mặt tiền xưởng và biển hiệu" ratio="4/3" priority />
+    </div>
+  </section>
+
+  {/* Thông tin đăng ký doanh nghiệp, tra cứu độc lập được. */}
+  <section class="wrap pb-14 md:pb-20">
+    <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+      Thông tin đăng ký doanh nghiệp
+    </h2>
+    <dl class="card mt-7 grid divide-y divide-[var(--color-line)] sm:grid-cols-2 sm:divide-y-0">
+      {
+        [
+          ['Tên doanh nghiệp', site.phapLy.tenCongTy],
+          ['Mã số thuế', site.phapLy.maSoThue],
+          ['Loại hình', site.phapLy.loaiHinh],
+          ['Người đại diện pháp luật', site.phapLy.nguoiDaiDien],
+          ['Ngày hoạt động', site.phapLy.ngayHoatDong],
+          ['Ngành nghề chính', site.phapLy.nganhChinh],
+          ['Trạng thái', site.phapLy.trangThai],
+          ['Địa chỉ', site.address.full],
+        ].map(([nhan, giaTri]) => (
+          <div class="px-6 py-4">
+            <dt class="text-[15px] text-[var(--color-ink-muted)]">{nhan}</dt>
+            <dd class="mt-1 font-semibold">{giaTri}</dd>
+          </div>
+        ))
+      }
+    </dl>
+    <a
+      href={site.phapLy.linkTraCuu}
+      rel="nofollow noopener"
+      target="_blank"
+      class="mt-6 inline-flex items-center gap-1.5 font-semibold text-[var(--color-accent)] no-underline hover:underline"
+    >
+      Tra cứu mã số thuế {site.phapLy.maSoThue} trên nguồn công khai
+      <Icon name="ph:arrow-square-out-bold" class="size-4" aria-hidden="true" />
+    </a>
+  </section>
+
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-surface-2)] py-14 md:py-20">
+    <div class="wrap">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Làm tại xưởng, không thuê ngoài
+      </h2>
+      <p class="mt-3 max-w-[58ch] text-[var(--color-ink-muted)]">
+        Nhận việc rồi đưa cho nơi khác làm thì bạn không biết ai làm và làm bằng
+        vật tư gì. Bốn công đoạn dưới đây đều diễn ra trong xưởng.
+      </p>
+
+      <ul class="mt-9 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          congDoan.map((cd) => (
+            <li class="rounded-[var(--radius-card)] border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+              <Icon
+                name={cd.icon}
+                class="size-7 text-[var(--color-accent)]"
+                aria-hidden="true"
+              />
+              <h3 class="mt-4 text-lg font-bold">{cd.ten}</h3>
+              <p class="mt-1.5 text-[15px] leading-relaxed text-[var(--color-ink-muted)]">
+                {cd.mo}
+              </p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap py-14 md:py-20">
+    <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+      Bên trong xưởng
+    </h2>
+    <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {
+        [
+          anh.xuong.toanCanh,
+          anh.xuong.mayCat,
+          anh.xuong.mayChan,
+          anh.xuong.thoHan,
+          anh.xuong.danhBong,
+          anh.xuong.vatTu,
+        ].map((a) => (
+          <div class="overflow-hidden rounded-[var(--radius-card)]" style="box-shadow: var(--shadow-card)">
+            <PhotoSlot anh={a} label={a.alt} ratio="4/3" sizes="(max-width: 1024px) 50vw, 33vw" />
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-surface-2)]">
+    <div class="wrap py-14 text-center md:py-20">
+      <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+        Muốn xem tận nơi thì cứ tới
+      </h2>
+      <p class="mx-auto mt-4 max-w-[48ch] text-[var(--color-ink-muted)]">
+        {site.address.full}. Gọi trước một tiếng để có người tiếp.
+      </p>
+      <div class="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-footer">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-footer">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

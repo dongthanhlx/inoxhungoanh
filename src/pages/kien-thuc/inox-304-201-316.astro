@@ -1,0 +1,195 @@
+---
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import { site, cta } from '../../data/site';
+
+/*
+  This page exists to be quoted. Google AI Overview, ChatGPT and Perplexity pull
+  from pages that answer a question directly, with figures, in plain language.
+  Everything here is general material fact, verifiable independently, and makes
+  no claim about Hùng Oanh's own work (CLAUDE.md, Content integrity).
+*/
+
+const title = 'Inox 304, 201 và 316 khác nhau thế nào? | Inox Hùng Oanh';
+const description =
+  'So sánh inox 304, 201 và 316: thành phần, khả năng chống gỉ, giá và nên dùng loại nào cho cổng, lan can, bàn bếp. Cách thử phân biệt tại chỗ.';
+
+const crumbs = [
+  { name: 'Inox 304, 201 và 316', href: '/kien-thuc/inox-304-201-316/' },
+];
+
+const macInox = [
+  {
+    ten: 'Inox 201',
+    thanhPhan: 'Khoảng 16-18% crôm, niken thấp, thay một phần bằng mangan',
+    chongGi: 'Trung bình. Để ẩm lâu ngày dễ xuất hiện vết hoen',
+    dungO: 'Trong nhà, nơi khô ráo: kệ, khung đồ ít chạm nước',
+    gia: 'Rẻ nhất trong ba loại',
+  },
+  {
+    ten: 'Inox 304',
+    thanhPhan: 'Khoảng 18% crôm, 8% niken',
+    chongGi: 'Tốt. Chịu được ngoài trời, gần bếp, gần nước',
+    dungO: 'Cổng, cửa, lan can, bàn bếp, chậu rửa',
+    gia: 'Cao hơn 201',
+  },
+  {
+    ten: 'Inox 316',
+    thanhPhan: 'Như 304 và thêm khoảng 2-3% molypden',
+    chongGi: 'Rất tốt, kể cả môi trường mặn hoặc nhiều hoá chất',
+    dungO: 'Vùng ven biển, môi trường hoá chất, thiết bị y tế',
+    gia: 'Cao nhất',
+  },
+];
+
+const faqSchema = [
+  {
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Inox 304 và inox 201 khác nhau thế nào?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Inox 304 chứa khoảng 18% crôm và 8% niken nên chống gỉ tốt, dùng được ngoài trời và nơi ẩm. Inox 201 thay một phần niken bằng mangan nên rẻ hơn nhưng chịu ẩm kém hơn, chỉ nên dùng trong nhà nơi khô ráo.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Làm cổng inox ngoài trời nên dùng inox 304 hay 201?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Nên dùng inox 304. Cổng chịu mưa nắng quanh năm, và chênh lệch giá giữa 304 và 201 thường nhỏ hơn chi phí tháo ra làm lại khi bị hoen.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Có cách nào phân biệt inox 304 và 201 tại chỗ không?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Nam châm chỉ cho biết sơ bộ vì cả hai đều có thể hút nhẹ sau khi gia công. Cách chắc chắn là dùng dung dịch thử mác inox, giá rẻ và cho kết quả trong khoảng một phút. Ngoài ra nên yêu cầu bên bán ghi rõ mác inox và độ dày trên báo giá.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<Base
+  title={title}
+  description={description}
+  crumbs={crumbs}
+  schema={faqSchema}
+>
+  <article class="wrap py-12 md:py-16">
+    <h1 class="max-w-[20ch] text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
+      Inox 304, 201 và 316 khác nhau thế nào
+    </h1>
+    <p class="mt-5 max-w-[62ch] text-lg leading-relaxed text-[var(--color-ink-muted)]">
+      Mác inox quyết định phần lớn giá thành, và cũng là điểm dễ gây nhầm lẫn
+      nhất khi mua. Dưới đây là khác biệt giữa ba mác phổ biến.
+    </p>
+
+    <div class="mt-12 grid gap-5 lg:grid-cols-3">
+      {
+        macInox.map((mac) => (
+          <section class="rounded-[var(--radius-card)] border border-[var(--color-line)] bg-[var(--color-surface-2)] p-6">
+            <h2 class="text-2xl font-extrabold">{mac.ten}</h2>
+            <dl class="mt-5 grid gap-4 text-[15px] leading-relaxed">
+              <div>
+                <dt class="font-semibold">Thành phần</dt>
+                <dd class="text-[var(--color-ink-muted)]">{mac.thanhPhan}</dd>
+              </div>
+              <div>
+                <dt class="font-semibold">Chống gỉ</dt>
+                <dd class="text-[var(--color-ink-muted)]">{mac.chongGi}</dd>
+              </div>
+              <div>
+                <dt class="font-semibold">Nên dùng ở</dt>
+                <dd class="text-[var(--color-ink-muted)]">{mac.dungO}</dd>
+              </div>
+              <div>
+                <dt class="font-semibold">Giá</dt>
+                <dd class="text-[var(--color-ink-muted)]">{mac.gia}</dd>
+              </div>
+            </dl>
+          </section>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-16">
+      <section>
+        <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+          Nên chọn mác nào cho từng vị trí
+        </h2>
+        <div class="mt-5 grid gap-4 leading-relaxed text-[var(--color-ink-muted)]">
+          <p>
+            <strong class="text-[var(--color-ink)]">Đồ ngoài trời</strong> như
+            cổng, cửa, lan can ban công, mái che: chọn 304. Chênh lệch giá so với
+            201 thường nhỏ hơn nhiều so với chi phí tháo ra làm lại khi bị hoen
+            sau vài mùa mưa.
+          </p>
+          <p>
+            <strong class="text-[var(--color-ink)]">Đồ gần nước và nhiệt</strong>
+            như bàn bếp, chậu rửa, kệ trong bếp ăn: chọn 304. Bếp là môi trường
+            vừa ẩm vừa nóng vừa có muối và dầu mỡ.
+          </p>
+          <p>
+            <strong class="text-[var(--color-ink)]">Đồ trong nhà khô ráo</strong>
+            như kệ kho, khung giá đỡ trong phòng: 201 dùng được và tiết kiệm.
+          </p>
+          <p>
+            <strong class="text-[var(--color-ink)]">Vùng ven biển</strong> hoặc
+            nơi có hoá chất: cân nhắc 316. Ở khu vực Vĩnh Phúc thì hiếm khi cần tới mức này.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-2xl font-extrabold tracking-tight md:text-3xl">
+          Làm sao biết mình mua đúng mác
+        </h2>
+        <div class="mt-5 grid gap-4 leading-relaxed text-[var(--color-ink-muted)]">
+          <p>
+            <strong class="text-[var(--color-ink)]">Nam châm chỉ nói được sơ bộ.</strong>
+            Inox 304 ở dạng tấm nguyên thường không hút nam châm, nhưng sau khi
+            cắt, chấn hay hàn thì có thể hút nhẹ. Vì vậy nam châm hút không có
+            nghĩa chắc chắn là hàng 201.
+          </p>
+          <p>
+            <strong class="text-[var(--color-ink)]">Dung dịch thử mác inox</strong>
+            cho kết quả trong khoảng một phút và chi phí rất thấp. Đây là cách
+            chắc chắn nếu quý khách muốn tự kiểm tra.
+          </p>
+          <p>
+            <strong class="text-[var(--color-ink)]">Cách đơn giản nhất:</strong>
+            yêu cầu bên bán ghi rõ mác inox và độ dày ngay trên báo giá. Hai báo
+            giá chỉ so được với nhau khi cùng mác và cùng độ dày. Một bên báo rẻ
+            hơn mà không ghi hai thông tin đó thì con số không nói lên điều gì.
+          </p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="mt-16 rounded-[var(--radius-card)] border border-[var(--color-line)] bg-[var(--color-surface-2)] p-7 md:p-9">
+      <h2 class="text-2xl font-extrabold tracking-tight">
+        Cần tư vấn cho đúng việc của bạn
+      </h2>
+      <p class="mt-3 max-w-[56ch] text-[var(--color-ink-muted)]">
+        Quý khách cho biết hạng mục và vị trí lắp đặt, xưởng sẽ tư vấn mác inox
+        cân đối được giữa chi phí và độ bền.
+      </p>
+      <div class="mt-7 flex flex-col gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-kienthuc">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-kienthuc">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </aside>
+  </article>
+</Base>

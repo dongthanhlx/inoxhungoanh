@@ -1,0 +1,112 @@
+---
+import { site } from '../data/site';
+import Header from '../components/Header.astro';
+import StickyCta from '../components/StickyCta.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+
+interface Crumb {
+  name: string;
+  href: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  /** Breadcrumb trail, excluding the home page (added automatically). */
+  crumbs?: Crumb[];
+  /** Extra Schema.org objects for this page (Product, FAQPage, ...). */
+  schema?: Record<string, unknown>[];
+}
+
+const { title, description, crumbs = [], schema = [] } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, site.domain).href;
+
+/*
+  LocalBusiness on every page. CLAUDE.md floor rule 3: this is what Google AI
+  Overview / ChatGPT / Perplexity read. No `areaServed` is declared - coverage is
+  discussed on the call (ARCHITECTURE.md).
+*/
+const localBusiness = {
+  '@type': 'LocalBusiness',
+  '@id': `${site.domain}/#business`,
+  name: site.name,
+  legalName: site.phapLy.tenCongTy,
+  description: site.tagline,
+  url: site.domain,
+  telephone: site.phone.e164,
+  /* Mã số thuế: dữ liệu đăng ký công khai, tra cứu độc lập được. */
+  taxID: site.phapLy.maSoThue,
+  vatID: site.phapLy.maSoThue,
+  foundingDate: '2021-11-04',
+  founder: { '@type': 'Person', name: site.phapLy.nguoiDaiDien },
+  sameAs: [site.phapLy.linkTraCuu],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: `${site.address.street}, ${site.address.ward}`,
+    addressLocality: site.address.district,
+    addressRegion: site.address.province,
+    addressCountry: site.address.country,
+  },
+};
+
+const breadcrumbs = {
+  '@type': 'BreadcrumbList',
+  itemListElement: [{ name: 'Trang chủ', href: '/' }, ...crumbs].map(
+    (crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      item: new URL(crumb.href, site.domain).href,
+    })
+  ),
+};
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [localBusiness, breadcrumbs, ...schema],
+};
+---
+
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
+  </head>
+
+  <body class="min-h-screen">
+    <a
+      href="#noi-dung"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:bg-[var(--color-accent)] focus:px-4 focus:py-2 focus:text-[var(--color-on-accent)]"
+    >
+      Tới nội dung chính
+    </a>
+
+    <Header />
+
+    <main id="noi-dung">
+      <slot />
+    </main>
+
+    <SiteFooter />
+    <StickyCta />
+  </body>
+</html>
