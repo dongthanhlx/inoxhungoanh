@@ -134,6 +134,9 @@ How to look at the site (Chrome is installed; Node has a global WebSocket):
       an hour this session.
       Note astro preview runs as a daemon and may pick 4322 if 4321 is taken;
       check its output for the port rather than assuming.
-Last shipped: nothing yet
+Repo: https://github.com/dongthanhlx/inoxhungoanh (branch main). Initial import b97bf1d.
+      Git identity is set per-repo, not globally: dongthanhlx <dongthanhlx@gmail.com>.
+Last shipped: nothing yet. The code is pushed but the site is NOT deployed, so the
+      Outcome check has not started counting.
 Last updated: 2026-09-04
 Skills active: shipright, design-taste-frontend
