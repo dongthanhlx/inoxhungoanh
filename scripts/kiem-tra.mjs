@@ -9,7 +9,7 @@
  * Chạy sau `npm run build`. Trả về mã khác 0 khi còn chỗ chưa hoàn thiện, nên
  * có thể dùng để chặn deploy.
  */
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIST = 'dist';
@@ -73,6 +73,20 @@ for (const page of pages) {
   for (const m of html.matchAll(/data-photo-slot="([^"]*)"/g)) dem(nhom.oTrong.map, page, m[1]);
   for (const m of html.matchAll(/data-cho-noi-dung="([^"]*)"/g)) dem(nhom.noiDung.map, page, m[1]);
   if (!/<link[^>]+rel="stylesheet"/.test(html)) thieuCss.push(page.replace(/\\/g, '/'));
+}
+
+/*
+  Thiếu trang 404.
+
+  Cloudflare Pages chỉ trả đúng status 404 khi có sẵn dist/404.html. Không có nó,
+  mọi URL rác đều nhận nguyên trang chủ kèm status 200, và Google index chúng như
+  nội dung trùng lặp. Đã từng xảy ra trên bản live.
+*/
+if (!existsSync(join(DIST, '404.html'))) {
+  console.error('LỖI NGHIÊM TRỌNG: không có dist/404.html.');
+  console.error('  Mọi URL sai sẽ trả về trang chủ kèm status 200 (soft 404).');
+  console.error('  Tạo src/pages/404.astro rồi build lại.');
+  process.exit(2);
 }
 
 if (thieuCss.length) {

@@ -1,0 +1,83 @@
+---
+/**
+ * Trang 404.
+ *
+ * Không có file này, Cloudflare Pages trả nguyên trang chủ kèm status 200 cho
+ * MỌI đường dẫn không tồn tại. Google gọi đó là soft 404: nó index vô số URL rác
+ * cùng trỏ về một nội dung, làm loãng tín hiệu trùng lặp và tiêu tốn crawl
+ * budget của cả tên miền.
+ *
+ * Astro build file này ra dist/404.html, và Cloudflare Pages tự phục vụ nó với
+ * đúng status 404.
+ *
+ * Khách đi lạc vẫn là khách. Vì vậy trang này giữ nguyên hai kênh liên hệ thay
+ * vì chỉ báo lỗi rồi bỏ mặc.
+ */
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import { site, cta } from '../data/site';
+import { hangMucCha } from '../data/hang-muc';
+
+const title = 'Không tìm thấy trang | Inox Hùng Oanh';
+const description =
+  'Đường dẫn không tồn tại hoặc đã được thay đổi. Xem danh mục sản phẩm inox hoặc liên hệ trực tiếp với xưởng.';
+---
+
+<Base title={title} description={description}>
+  <section class="wrap py-16 md:py-24">
+    <div class="mx-auto max-w-[60ch] text-center">
+      <p class="eyebrow">Lỗi 404</p>
+      <h1 class="mt-3 text-[2rem] font-extrabold leading-[1.14] sm:text-5xl">
+        Không tìm thấy trang này
+      </h1>
+      <p class="mt-5 text-lg leading-relaxed text-[var(--color-ink-muted)]">
+        Đường dẫn quý khách vừa mở không tồn tại, hoặc đã được thay đổi. Quý
+        khách có thể xem các nhóm sản phẩm bên dưới, hoặc liên hệ trực tiếp để
+        được tư vấn.
+      </p>
+
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
+        <a href={cta.call.href} class="btn btn-primary" data-cta="call-404">
+          <Icon name="ph:phone-fill" class="size-5" aria-hidden="true" />
+          Gọi {site.phone.display}
+        </a>
+        <a href={cta.zalo.href} class="btn btn-secondary" data-cta="zalo-404">
+          <Icon name="ph:chat-circle-dots-fill" class="size-5" aria-hidden="true" />
+          {cta.zalo.label}
+        </a>
+      </div>
+    </div>
+
+    <nav aria-label="Nhóm sản phẩm" class="mx-auto mt-14 max-w-[52rem]">
+      <ul class="grid gap-3 sm:grid-cols-2">
+        {
+          hangMucCha.map((muc) => (
+            <li>
+              <a
+                href={muc.href}
+                class="card flex items-center justify-between gap-4 px-5 py-4 no-underline"
+              >
+                <span class="font-semibold">{muc.ten}</span>
+                <Icon
+                  name="ph:arrow-right-bold"
+                  class="size-4 shrink-0 text-[var(--color-accent)]"
+                  aria-hidden="true"
+                />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <p class="mt-8 text-center">
+        <a
+          href="/"
+          class="inline-flex items-center gap-1.5 font-semibold text-[var(--color-accent)] no-underline hover:underline"
+        >
+          <Icon name="ph:arrow-left-bold" class="size-4" aria-hidden="true" />
+          Về trang chủ
+        </a>
+      </p>
+    </nav>
+  </section>
+</Base>

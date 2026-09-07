@@ -136,7 +136,11 @@ How to look at the site (Chrome is installed; Node has a global WebSocket):
       check its output for the port rather than assuming.
 Repo: https://github.com/dongthanhlx/inoxhungoanh (branch main). Initial import b97bf1d.
       Git identity is set per-repo, not globally: dongthanhlx <dongthanhlx@gmail.com>.
-Last shipped: nothing yet. The code is pushed but the site is NOT deployed, so the
-      Outcome check has not started counting.
+Last shipped: 2026-09-07 — inoxhungoanh.com is LIVE on Cloudflare Pages, serving the
+      current build (verified: correct content, stylesheet present, all 12 sitemap URLs 200).
+      Signal to watch: inbound calls/Zalo from people who say they found the site on Google.
+      Check by: 2026-10-19 (six weeks). Ask the owner before starting any new feature.
+      Caveat the owner accepted: it went live while 26 stock images and 20 unconfirmed
+      content spots remain, so what is indexed now is not yet the real workshop.
 Last updated: 2026-09-04
 Skills active: shipright, design-taste-frontend
