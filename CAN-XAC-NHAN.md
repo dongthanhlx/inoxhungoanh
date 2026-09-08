@@ -54,7 +54,7 @@ Những chỗ này website đang hiển thị ô chờ hoặc dòng ghi chú, **
 | Chỗ trống | Cần gì | Ai cung cấp |
 |---|---|---|
 | Giờ mở cửa | Ví dụ: 7:30-18:00, T2-T7 | Bạn |
-| 5 câu FAQ chưa có đáp án | Giá cổng, có đo tận nơi không, bao lâu xong, nhận bản vẽ không, bảo hành thế nào | Bạn |
+| 5 câu FAQ chưa có đáp án | **Đã có bản nháp sẵn** trong `src/data/faq.ts`, chỉ cần điền chỗ `[CẦN ĐIỀN]` — xem mục E | Bạn |
 | Toàn bộ trang Công trình | Ảnh thật + địa điểm + năm cho từng việc | Bạn |
 | Mọi ô ảnh trên site | Xem `assets-goc/` | Bạn |
 | Bản đồ trang Liên hệ | Nhúng sau khi lập Google Business Profile | Sau khi có GBP |
@@ -100,6 +100,33 @@ về Hùng Oanh** nên không có rủi ro:
 Trang `/kien-thuc/inox-304-201-316/` xây trên phần này. Đó cũng là trang có khả
 năng được Google AI Overview và ChatGPT trích dẫn cao nhất, vì nó trả lời thẳng
 một câu hỏi thật bằng dữ kiện.
+
+---
+
+## E. Năm câu FAQ — bản nháp đã soạn, chờ bạn điền số
+
+Mở `src/data/faq.ts`. Mỗi câu chưa xong có sẵn một `traLoiNhap` viết hoàn chỉnh,
+chỉ chừa những chỗ đánh dấu `[CẦN ĐIỀN]`. Đó đúng là những thứ **chỉ bạn biết**
+và tôi không được phép đoán:
+
+| Câu | Chỗ cần bạn điền |
+|---|---|
+| Giá cổng inox | (không bắt buộc) một khoảng giá tham khảo, nếu muốn công bố |
+| Có đo tận nơi không | có/không · phạm vi đi · miễn phí hay tính phí |
+| Bao lâu thì xong | số ngày cho 3 nhóm: bàn kệ · cửa cổng · cầu thang lan can |
+| Nhận bản vẽ / ảnh mẫu | xác nhận có nhận đơn lẻ một chi tiết không |
+| Bảo hành | thời hạn · phạm vi · cách xử lý khi có lỗi |
+
+**Cách hoàn thiện một câu:** sửa nội dung cho đúng, rồi đổi tên trường
+`traLoiNhap` thành `traLoi`. Chỉ vậy thôi. Câu đó lập tức hiện trên trang và
+được đưa vào FAQPage schema để Google với ChatGPT trích dẫn.
+
+Không đổi tên trường thì bản nháp **không lên trang, không vào schema** — đã
+kiểm chứng: hiện tại 6 câu hỏi đều hiển thị nhưng chỉ 1 câu có đáp án nằm trong
+structured data.
+
+Hai câu về **bảo hành** và **thời gian giao** là cam kết bạn sẽ phải thực hiện
+khi khách cầm nó gọi tới. Đừng ghi con số đẹp, hãy ghi con số giữ được.
 
 ---
 
