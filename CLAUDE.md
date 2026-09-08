@@ -92,6 +92,26 @@ structured data, where it earns local search without dominating the page.
 Blog/news system, multi-language, CMS, cart/checkout, customer login, quote-tracking backend,
 heavy design-token pipeline, heavy animation.
 
+## Deploying — Cloudflare Pages, and how it silently lies
+Git-connected Pages project, production branch `main`, build `npm run build`, output `dist`,
+Node pinned by `.nvmrc`. A push to `main` deploys.
+
+Three traps cost several days here, all of which report success while changing nothing:
+- The project silently **disconnected from GitHub**. Pushes landed, no build ran, no email.
+  Fix is re-authorising the "Cloudflare Pages" GitHub App at github.com/settings/installations,
+  not clicking Retry.
+- **Retry deployment re-runs the same old commit.** It cannot pick up newer ones.
+- **Reconnecting Git does not build existing commits.** It waits for the next push event.
+- `wrangler pages deploy dist` without `--branch=main` creates a *preview* deployment. The CLI
+  prints Success and a working URL while production stays on the old build.
+
+Never trust a success message. The one check that cannot be fooled, because the file only exists
+in newer builds and older builds answer every unknown path with the homepage:
+
+    curl -sI https://inoxhungoanh.com/og.jpg | grep -i content-type
+    # image/jpeg  -> the new build really is in production
+    # text/html   -> still the old build, whatever the dashboard says
+
 ## Known defect — intermittent missing stylesheet
 Roughly one build in several emits HTML with no stylesheet link at all, while reporting success.
 The page then renders unstyled. Root cause is NOT established: it survived a full clean of `dist`,
@@ -136,8 +156,9 @@ How to look at the site (Chrome is installed; Node has a global WebSocket):
       check its output for the port rather than assuming.
 Repo: https://github.com/dongthanhlx/inoxhungoanh (branch main). Initial import b97bf1d.
       Git identity is set per-repo, not globally: dongthanhlx <dongthanhlx@gmail.com>.
-Last shipped: 2026-09-07 — inoxhungoanh.com is LIVE on Cloudflare Pages, serving the
-      current build (verified: correct content, stylesheet present, all 12 sitemap URLs 200).
+Last shipped: 2026-09-09 — inoxhungoanh.com LIVE on Cloudflare Pages and confirmed current
+      (og.jpg returns image/jpeg, unknown paths return a real 404, live CSS hash matches local,
+      all 12 sitemap URLs 200, 14/14 images load, home 0.39s).
       Signal to watch: inbound calls/Zalo from people who say they found the site on Google.
       Check by: 2026-10-19 (six weeks). Ask the owner before starting any new feature.
       Caveat the owner accepted: it went live while 26 stock images and 20 unconfirmed
