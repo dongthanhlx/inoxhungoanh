@@ -27,7 +27,12 @@ const congTrinh: Array<{
 const soChoTrong = 6;
 ---
 
-<Base title={title} description={description} crumbs={crumbs}>
+<Base
+  title={title}
+  description={description}
+  crumbs={crumbs}
+  noindex={congTrinh.length === 0}
+>
   <section class="wrap py-12 md:py-16">
     <h1 class="text-[2rem] font-extrabold leading-[1.14] tracking-tight sm:text-5xl">
       Công trình đã làm

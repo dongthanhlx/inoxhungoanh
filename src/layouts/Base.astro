@@ -13,13 +13,25 @@ interface Crumb {
 interface Props {
   title: string;
   description: string;
+  /**
+   * Chặn Google index trang này. Chỉ dùng cho trang đang thực sự trống nội dung:
+   * một trang rỗng được index sẽ bị đánh giá là thin content và kéo theo cả tên
+   * miền, chứ không chỉ riêng nó.
+   */
+  noindex?: boolean;
   /** Breadcrumb trail, excluding the home page (added automatically). */
   crumbs?: Crumb[];
   /** Extra Schema.org objects for this page (Product, FAQPage, ...). */
   schema?: Record<string, unknown>[];
 }
 
-const { title, description, crumbs = [], schema = [] } = Astro.props;
+const {
+  title,
+  description,
+  noindex = false,
+  crumbs = [],
+  schema = [],
+} = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, site.domain).href;
 const ogImage = new URL('/og.jpg', site.domain).href;
@@ -78,6 +90,7 @@ const jsonLd = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
