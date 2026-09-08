@@ -135,9 +135,13 @@ Active: 12 pages build clean, light theme only, stock imagery in place as a visu
         business facts still await the owner.
 Design: committed light mode (no dark). The owner found the dark scheme gloomy and
         wrong for the audience, and photos of stainless read better on white.
-Next: owner fills assets-goc/ (photos + THONG-TIN.md) and CAN-XAC-NHAN.md ->
-      import photos into PhotoSlot -> `npm run kiem-tra` must report zero ->
-      publish Google Business Profile -> deploy -> then answer the Outcome check
+Next: the bottleneck is no longer code. In order of leverage, all owner-side:
+      1. Google Business Profile (untested assumption lives or dies here)
+      2. Google Search Console + submit sitemap-index.xml (no data without it)
+      3. Real photos into assets-goc/, then wire them in place of the stock set
+      4. The five unanswered FAQ questions
+      Then: `npm run kiem-tra` to zero, un-noindex /cong-trinh/, answer the Outcome check.
+      Do NOT add features while waiting. That is the build trap this file exists to prevent.
 Verified by running it: astro build green (12 pages) - 0 broken internal links -
       0 JavaScript shipped - 0 em-dashes - 11/11 colour pairs pass WCAG AA -
       sitemap covers all 12 URLs - measured in headless Chrome at 390px wide,
