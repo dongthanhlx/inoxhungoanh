@@ -83,6 +83,26 @@ export const site = {
     daDangKy: false,
     urlXacNhan: null as string | null,
   },
+
+  /**
+   * Cloudflare Web Analytics.
+   *
+   * Không cookie, không theo dõi cá nhân, nên không cần banner đồng ý cookie.
+   * Beacon chỉ được chèn khi có token, vì vậy khi `token` còn null thì site vẫn
+   * giữ đúng 0 JavaScript như thiết kế ban đầu (ADR-001).
+   *
+   * Lấy token: Cloudflare dashboard -> Web Analytics -> Add a site ->
+   * inoxhungoanh.com -> copy giá trị "token" trong đoạn script.
+   * Token này công khai (nằm trong mã nguồn trang) nên commit vào repo là bình
+   * thường, không phải bí mật.
+   *
+   * LƯU Ý: nếu bật Web Analytics thẳng trong phần cài đặt của Pages project,
+   * Cloudflare tự chèn beacon ở tầng edge. Khi đó phải để `token` là null,
+   * nếu không beacon bị nạp hai lần và số liệu đếm gấp đôi.
+   */
+  analytics: {
+    cloudflareToken: null as string | null,
+  },
 } as const;
 
 /** Hai kênh chuyển đổi duy nhất của website. */

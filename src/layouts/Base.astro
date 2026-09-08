@@ -136,5 +136,23 @@ const jsonLd = {
 
     <SiteFooter />
     <StickyCta />
+
+    {
+      /*
+        Beacon đo lượt truy cập. `defer` nên không chặn hiển thị.
+        Mọi nút Gọi và Zalo đã mang sẵn thuộc tính data-cta (call-hero,
+        zalo-sticky, ...) từ lúc dựng, nên khi cần đo tỉ lệ bấm nút thì đã có
+        sẵn điểm móc, không phải sửa lại từng nút.
+      */
+      site.analytics.cloudflareToken && (
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({
+            token: site.analytics.cloudflareToken,
+          })}
+        />
+      )
+    }
   </body>
 </html>
